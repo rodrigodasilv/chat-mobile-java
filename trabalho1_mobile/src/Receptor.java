@@ -46,7 +46,7 @@ public class Receptor extends Thread {
           }
 
           fileOutputStream.close();
-          
+
           // Reencaminhar o arquivo para o destinatário
           String nomeDestinatario = mensagemSplit[2];
           Socket destinatario = Servidor.clientes.get(nomeDestinatario);
@@ -54,8 +54,6 @@ public class Receptor extends Thread {
           File arquivo = new File(nomeArquivo);
 
           FileInputStream fileInputStream = new FileInputStream(arquivo);
-          byte[] buffer = new byte[1024];
-          int bytesRead;
 
           OutputStream outputStream = destinatario.getOutputStream();
 
