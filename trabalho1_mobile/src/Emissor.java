@@ -1,7 +1,4 @@
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.PrintStream;
+import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -23,8 +20,8 @@ public class Emissor extends Thread {
         if (texto.equals("/sair")) {
           saida.println(texto);
           break;
-        }else if (comando.startsWith("/send file")) {
-            String[] comandoSplit = comando.split(" ");
+        }else if (texto.startsWith("/send file")) {
+            String[] comandoSplit = texto.split(" ");
             String nomeSocketDestinatario = comandoSplit[2];
             String caminhoArquivo = comandoSplit[3];
             //enviarArquivo(nomeSocketDestinatario, caminhoArquivo, saida);
