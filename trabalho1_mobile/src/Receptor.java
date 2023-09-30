@@ -34,19 +34,28 @@ public class Receptor extends Thread {
           Servidor.clientes.remove(Servidor.buscaClientKey(socket));
         }else if(texto.startsWith("/send file")) {
           String[] mensagemSplit = texto.split(" ");
-          String nomeArquivo = mensagemSplit[2];
-          //receberArquivo(nomeArquivo, clienteReceptor);
+          String nomeArquivo = mensagemSplit[3];
 
-          FileOutputStream fileOutputStream = new FileOutputStream(nomeArquivo);
+          // Reencaminhar o arquivo para o destinatário
+          String nomeDestinatario = mensagemSplit[2];
+          Socket destinatario = Servidor.clientes.get(nomeDestinatario);
+
+          File arquivo = new File(nomeArquivo);
+
+          FileInputStream fileInputStream = new FileInputStream(arquivo);
           byte[] buffer = new byte[1024];
           int bytesRead;
 
-          InputStream inputStream = socket.getInputStream();
-          while ((bytesRead = inputStream.read(buffer)) != -1) {
-            fileOutputStream.write(buffer, 0, bytesRead);
+          OutputStream outputStream = destinatario.getOutputStream();
+
+          while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, bytesRead);
           }
 
-          fileOutputStream.close();
+          fileInputStream.close();
+          outputStream.close();
+
+          System.out.println("Arquivo enviado para " + Servidor.buscaClientKey(destinatario) + ": " + nomeArquivo);
         }
 
         System.out.println(texto);
