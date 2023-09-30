@@ -32,7 +32,23 @@ public class Receptor extends Thread {
           clienteReceptor.println("[" + Servidor.buscaClientKey(socket) + "]: " + mensagem);
         }else if(texto.equals("/sair")){
           Servidor.clientes.remove(Servidor.buscaClientKey(socket));
+        }else if(texto.startsWith("/send file")) {
+          String[] mensagemSplit = texto.split(" ");
+          String nomeArquivo = mensagemSplit[2];
+          //receberArquivo(nomeArquivo, clienteReceptor);
+
+          FileOutputStream fileOutputStream = new FileOutputStream(nomeArquivo);
+          byte[] buffer = new byte[1024];
+          int bytesRead;
+
+          InputStream inputStream = socket.getInputStream();
+          while ((bytesRead = inputStream.read(buffer)) != -1) {
+            fileOutputStream.write(buffer, 0, bytesRead);
+          }
+
+          fileOutputStream.close();
         }
+
         System.out.println(texto);
       }
     } catch (IOException e) {
