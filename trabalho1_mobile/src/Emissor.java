@@ -21,6 +21,7 @@ public class Emissor extends Thread {
         var texto = teclado.nextLine();
 
         if (texto.equals("/sair")) {
+          Servidor.clientes.remove(Servidor.buscaClientKey(socket));
           break;
         }
         saida.println(texto);
