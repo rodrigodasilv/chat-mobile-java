@@ -20,11 +20,11 @@ public class Emissor extends Thread {
       while (teclado.hasNextLine()) {
         var texto = teclado.nextLine();
 
+
+        saida.println(texto);
         if (texto.equals("/sair")) {
-          Servidor.clientes.remove(Servidor.buscaClientKey(socket));
           break;
         }
-        saida.println(texto);
       }
 
       teclado.close();

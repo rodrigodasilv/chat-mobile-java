@@ -30,6 +30,8 @@ public class Receptor extends Thread {
 
           var clienteReceptor = new PrintStream(receptor.getOutputStream());
           clienteReceptor.println("[" + Servidor.buscaClientKey(socket) + "]: " + mensagem);
+        }else if(texto.equals("/sair")){
+          Servidor.clientes.remove(Servidor.buscaClientKey(socket));
         }
         System.out.println(texto);
       }
