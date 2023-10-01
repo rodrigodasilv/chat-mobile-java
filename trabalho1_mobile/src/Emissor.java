@@ -24,7 +24,6 @@ public class Emissor extends Thread {
             String[] comandoSplit = texto.split(" ");
             String nomeSocketDestinatario = comandoSplit[2];
             String caminhoArquivo = comandoSplit[3];
-            //enviarArquivo(nomeSocketDestinatario, caminhoArquivo, saida);
 
             File arquivo = new File(caminhoArquivo);
 
