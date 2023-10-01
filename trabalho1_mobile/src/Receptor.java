@@ -1,6 +1,7 @@
 import java.io.*;
 import java.net.Socket;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Receptor extends Thread {
@@ -47,24 +48,27 @@ public class Receptor extends Thread {
 
           fileOutputStream.close();
 
-          // Reencaminhar o arquivo para o destinatário
           String nomeDestinatario = mensagemSplit[2];
-          Socket destinatario = Servidor.clientes.get(nomeDestinatario);
+          if(!nomeDestinatario.equals(Servidor.buscaClientKey(socket))) {
+            // Reencaminhar o arquivo para o destinatário
 
-          File arquivo = new File(nomeArquivo);
+            Socket destinatario = Servidor.clientes.get(nomeDestinatario);
 
-          FileInputStream fileInputStream = new FileInputStream(arquivo);
+            File arquivo = new File(nomeArquivo);
 
-          OutputStream outputStream = destinatario.getOutputStream();
+            FileInputStream fileInputStream = new FileInputStream(arquivo);
 
-          while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-            outputStream.write(buffer, 0, bytesRead);
+            OutputStream outputStream = destinatario.getOutputStream();
+
+            while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+
+              System.out.println("Escrevendo arquivo!");
+              outputStream.write(buffer, 0, bytesRead);
+            }
+
+            fileInputStream.close();
+            outputStream.close();
           }
-
-          fileInputStream.close();
-          outputStream.close();
-
-          System.out.println("Arquivo enviado para " + Servidor.buscaClientKey(destinatario) + ": " + nomeArquivo);
         }
 
         System.out.println(texto);
