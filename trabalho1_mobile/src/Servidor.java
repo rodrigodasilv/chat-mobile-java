@@ -30,7 +30,7 @@ public class Servidor {
       LocalDateTime agora = LocalDateTime.now();
       DateTimeFormatter horarioFormatado = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
       String stringHorario = agora.format(horarioFormatado);
-      String message = "[" + name + "]" + "[" + stringHorario + "] Conexão estabelecida!";
+      String message = "[" + name + ":" + IP + "]" + "[" + stringHorario + "] Conexão estabelecida!";
       br.write(message);
       br.newLine();
       br.flush();
