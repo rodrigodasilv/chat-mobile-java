@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class Cliente {
   public static void main(String[] args) throws IOException {
-    var socket = new Socket("127.0.0.1", 9000);
+    var socket = new Socket("192.168.0.195", 9000);
 
     var teclado = new Scanner(System.in);
     var server = new PrintStream(socket.getOutputStream());
