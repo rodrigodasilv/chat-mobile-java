@@ -49,28 +49,41 @@ public class Receptor extends Thread {
           fileOutputStream.close();
 
           String nomeDestinatario = mensagemSplit[2];
-          if(!nomeDestinatario.equals(Servidor.buscaClientKey(socket))) {
-            // Reencaminhar o arquivo para o destinatário
 
-            Socket destinatario = Servidor.clientes.get(nomeDestinatario);
+          // Reencaminhar o arquivo para o destinatário
 
-            File arquivo = new File(nomeArquivo);
+          Socket destinatario = Servidor.clientes.get(nomeDestinatario);
 
-            FileInputStream fileInputStream = new FileInputStream(arquivo);
+          File arquivo = new File(nomeArquivo);
 
-            OutputStream outputStream = destinatario.getOutputStream();
+          FileInputStream fileInputStream = new FileInputStream(arquivo);
 
-            while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+          OutputStream outputStream = destinatario.getOutputStream();
 
-              System.out.println("Escrevendo arquivo!");
-              outputStream.write(buffer, 0, bytesRead);
-            }
-
-            fileInputStream.close();
-            outputStream.close();
+          var saida2 = new PrintStream(outputStream);
+          saida2.println("/receive file " + nomeArquivo);
+          bytesRead=0;
+          while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+            System.out.println("Escrevendo arquivo!");
+            outputStream.write(buffer, 0, bytesRead);
           }
-        }
+          fileInputStream.close();
+          outputStream.close();
 
+        }else if(texto.startsWith("/receive file")){
+          String[] mensagemSplit = texto.split(" ");
+          String nomeArquivo = mensagemSplit[2];
+
+          FileOutputStream fileOutputStream = new FileOutputStream(nomeArquivo);
+          byte[] buffer = new byte[1024];
+          int bytesRead;
+
+          InputStream inputStream = socket.getInputStream();
+          while ((bytesRead = inputStream.read(buffer)) != -1) {
+            fileOutputStream.write(buffer, 0, bytesRead);
+          }
+          fileOutputStream.close();
+        }
         System.out.println(texto);
       }
     } catch (IOException e) {
